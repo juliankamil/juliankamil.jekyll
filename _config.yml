@@ -3,8 +3,8 @@ title:              'Julian I. Kamil'
 bio:                ''
 description:        ''
 locale:             en_US
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://juliankamil.github.io" # the base hostname & protocol for your site
+baseurl:            "" 
+url:                "https://juliankamil.github.io"
 
 defaults:
 - scope:
@@ -41,9 +41,9 @@ instagram:          juliankamil
 github:             juliankamil
 
 # personal
-location:           Los Angeles, CA
-phone:              310-318-5555
-email:              info@default.com
+location:           The Blue Planet
+phone:              +1-703-348-0720
+email:              julian.kamil@gmail.com
 
 # Gems
 gems:
