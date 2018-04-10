@@ -13,3 +13,13 @@ a.news-link-title {
     font-size: 1.15rem;
 		     
 }
+
+#comments {
+    width: 100% !important;
+    height: 220px !important;
+}
+
+#comments iframe {
+    width: 100% !important;
+    height: 220px !important;
+}
