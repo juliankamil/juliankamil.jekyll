@@ -1,0 +1,15 @@
+ul.news-list blockquote {
+    color: orange;
+    margin: 0 0 1rem 0;
+    padding-left: 1rem;
+}
+
+ul.news-list blockquote p {
+    margin: 0 0 0 0;
+}
+
+a.news-link-title {
+    font-family: sans-serif;
+    font-size: 1.15rem;
+		     
+}
