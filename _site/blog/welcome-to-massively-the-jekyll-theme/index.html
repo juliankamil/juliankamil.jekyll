@@ -63,8 +63,16 @@
 
                 </section>
                 <div class="comments-wrapper">
-                    <div id="disqus_thread"></div>
-                    <script></script>
+		    <script src="https://apis.google.com/js/plusone.js"></script>
+		    <div id="comments"></div>
+		    <script>
+			gapi.comments.render('comments', {
+			href: window.location,
+			width: '1020',
+			first_party_property: 'BLOGGER',
+			view_type: 'FILTERED_POSTMOD'
+			});
+			</script>
                     <noscript>Please enable JavaScript to view comments</noscript>
                 </div>
                 <footer>
