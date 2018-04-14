@@ -20,6 +20,39 @@
 <!-- CSS -->
 <link rel="stylesheet" href="/assets/css/main.css">
 <link rel="stylesheet" href="/assets/css/twistech.css">
+
+<!-- Chatbot -->
+        <link rel="stylesheet" href="/lib/jquery-ui-chatbox/css/jquery-ui.css" type="text/css" media="screen">
+        <script type="text/javascript" src="/lib/jquery-ui-chatbox/js/jquery.js"></script>
+        <script type="text/javascript" src="/lib/jquery-ui-chatbox/js/jquery-ui.js"></script>
+        <link type="text/css" href="/lib/jquery-ui-chatbox/css/jquery-ui-chatbox.css" rel="stylesheet">
+        <script type="text/javascript" src="/lib/jquery-ui-chatbox/js/jquery-ui-chatbox.js"></script>
+        <script type="text/javascript">
+$(document).ready(function(){
+    var box = null;
+    $("input[type='button']").click(function(event, ui) {
+        if (box) {
+            box.chatbox("option", "boxManager").toggleBox();
+        }
+        else {
+            box = $("#chat_div").chatbox(
+		{
+		    id          : "chat_div", 
+		    user        : { key : "value" },
+                    title       : "chat",
+                    offset      : 0,
+                    width       : 400,
+		    messageSent : function(id, user, msg) {
+			$("#log").append(id + " said: " + msg + "<br/>");
+			$("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
+		    }
+		}
+	    );
+        }
+    });
+});
+        </script>
+
 <noscript><link rel="stylesheet" href="/assets/css/noscript.css"></noscript>
 
     </head>
@@ -125,6 +158,12 @@
         <li><a href="https://github.com/juliankamil" class="icon fa-github" rel="nofollow"><span class="label">GitHub</span></a></li>
       </ul>
     </section>
+    <section>
+	<ul class="actions">
+	    <li><input type="button" name="chat" value="chat"></li>
+	</ul>
+	<div id="chat_div" style="z-index: 9 !important;"></div>
+    </section>
   </section>
 </footer>
 <!-- Copyright -->
@@ -135,7 +174,6 @@
 
         </div>
         <!-- DYN -->
-<script src="/assets/js/jquery.min.js"></script>
 <script src="/assets/js/jquery.scrollex.min.js"></script>
 <script src="/assets/js/jquery.scrolly.min.js"></script>
 <script src="/assets/js/skel.min.js"></script>
