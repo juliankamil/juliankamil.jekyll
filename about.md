@@ -7,6 +7,6 @@ sitemap:
     lastmod: 2018-04-08
     changefreq: weekly
 ---
-## About
+## About me
 
-Under construction
+technotarian (noun) : a person who eats, sleeps, and breathes technology
