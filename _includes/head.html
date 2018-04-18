@@ -24,6 +24,26 @@
         <link   type="text/css"        href="/lib/jquery-ui-chatbox/css/jquery-ui-chatbox.css" rel="stylesheet" />
         <script type="text/javascript"  src="/lib/jquery-ui-chatbox/js/jquery-ui-chatbox.js"></script>
         <script type="text/javascript">
+var text      = "";
+var json_data = {};
+
+var spelling_words = [
+    "bicycle",    "where",   "blink",      "float",   
+    "glint",      "played",  "sent",       "those",   
+    "camera",     "any",     "can't",      "saw",     
+    "these",      "every",   "didn't",     "came",    
+    "want",       "many",    "don't",      "how",     
+    "maybe",      "only",    "day",        "sink",    
+    "when",       "pretty",  "stay",       "light",   
+    "off",        "really",  "train",      "thing",   
+    "hole",       "coat",    "hay",        "right",   
+    "mule",       "tow",     "mail",       "flight",  
+    "choke",      "slow",    "where",      "sight"    
+];
+
+var api_url     = "http://u160400:1080/watson-api-explorer.mybluemix.net:443/assistant/api/v1/workspaces/99d97456-119b-4dc6-a9fb-f68adfe1924f/message?version=2018-02-16";
+var credentials = "b391fc0a-debe-4086-9e78-caf790583342:CUdcm55853Av";
+
 $(document).ready(function(){
     var box = null;
     $("input[type='button']").click(function(event, ui) {
@@ -31,19 +51,72 @@ $(document).ready(function(){
             box.chatbox("option", "boxManager").toggleBox();
         }
         else {
+
             box = $("#chat_div").chatbox(
-		{
-		    id          : "chat_div", 
-		    user        : { key : "value" },
+                {
+                    id          : "chat_div",
+                    user        : { key : "you" },
                     title       : "chat",
                     offset      : 0,
                     width       : 400,
-		    messageSent : function(id, user, msg) {
-			$("#log").append(id + " said: " + msg + "<br/>");
-			$("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
-		    }
-		}
-	    );
+                    messageSent : function(id, user, msg) {
+                        $("#chat_div").chatbox("option", "boxManager").addMsg("you", msg);
+
+			json_data = { input : { text : msg } };
+
+			$.ajax(
+			    {
+				type        : "POST",
+				url         : api_url,
+				beforeSend  : function(xhr) { xhr.setRequestHeader("Authorization", "Basic " + btoa(credentials)); },
+				dataType    : "json",
+				crossDomain : true,
+				data        : JSON.stringify(json_data),
+				contentType : "application/json; charset=utf-8",
+				success: function(data, status, results) {
+				    console.log(results);
+
+				    var random_word = spelling_words[Math.floor(Math.random() * spelling_words.length)];
+				    var spelling    = random_word.split('').join(' ');
+
+				    json_data = results.responseJSON;
+				    text      = json_data.output.text[0].replace("{WORD}", random_word).replace("{SPELLING}", spelling);
+
+				    box.chatbox("option", "boxManager").addMsg("assistant", text);
+				},
+				error: function(results, status) {
+				    console.log("error " + status.code);
+				    console.log(results);
+				}
+			    }
+			);
+                    }
+                }
+            );
+
+            $.ajax(
+                {
+                    type        : "POST",
+                    url         : api_url,
+                    beforeSend  : function(xhr) { xhr.setRequestHeader("Authorization", "Basic " + btoa(credentials)); },
+                    dataType    : "json",
+                    crossDomain : true,
+                    data        : JSON.stringify(json_data),
+                    contentType : "application/json; charset=utf-8",
+                    success: function(data, status, results) {
+                        console.log(results);
+
+			json_data = results.responseJSON;
+			text      = json_data.output.text[0];
+
+                        box.chatbox("option", "boxManager").addMsg("assistant", text);
+                    },
+                    error: function(results, status) {
+                        console.log("error " + status.code);
+                        console.log(results);
+                    }
+                }
+            );
         }
     });
 });
