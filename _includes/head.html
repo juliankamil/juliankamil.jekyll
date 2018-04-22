@@ -51,72 +51,57 @@ $(document).ready(function(){
             box.chatbox("option", "boxManager").toggleBox();
         }
         else {
+            box = $("#chat_div").chatbox({
+                id          : "chat_div",
+                user        : { key : "you" },
+                title       : "chat",
+                offset      : 0,
+                width       : 400,
+                messageSent : function(id, user, msg) {
+                    $("#chat_div").chatbox("option", "boxManager").addMsg("you", msg);
+                    json_data = { input : { text : msg } };
 
-            box = $("#chat_div").chatbox(
-                {
-                    id          : "chat_div",
-                    user        : { key : "you" },
-                    title       : "chat",
-                    offset      : 0,
-                    width       : 400,
-                    messageSent : function(id, user, msg) {
-                        $("#chat_div").chatbox("option", "boxManager").addMsg("you", msg);
-
-			json_data = { input : { text : msg } };
-
-			$.ajax(
-			    {
-				type        : "POST",
-				url         : api_url,
-				beforeSend  : function(xhr) { xhr.setRequestHeader("Authorization", "Basic " + btoa(credentials)); },
-				dataType    : "json",
-				crossDomain : true,
-				data        : JSON.stringify(json_data),
-				contentType : "application/json; charset=utf-8",
-				success: function(data, status, results) {
-				    console.log(results);
-
-				    var random_word = spelling_words[Math.floor(Math.random() * spelling_words.length)];
-				    var spelling    = random_word.split('').join(' ');
-
-				    json_data = results.responseJSON;
-				    text      = json_data.output.text[0].replace("{WORD}", random_word).replace("{SPELLING}", spelling);
-
-				    box.chatbox("option", "boxManager").addMsg("assistant", text);
-				},
-				error: function(results, status) {
-				    console.log("error " + status.code);
-				    console.log(results);
-				}
-			    }
-			);
-                    }
+                    $.ajax({
+                        type        : "POST",
+                        url         : api_url,
+                        dataType    : "json",
+                        data        : JSON.stringify(json_data),
+                        contentType : "application/json; charset=utf-8",
+                        beforeSend: function(xhr) { xhr.setRequestHeader("Authorization", "Basic " + btoa(credentials)); },
+                        success:    function(data, status, results) {
+                            console.log(results);
+                            var random_word = spelling_words[Math.floor(Math.random() * spelling_words.length)];
+                            var spelling    = random_word.split('').join(' ');
+                            json_data = results.responseJSON;
+                            text      = json_data.output.text[0].replace("{WORD}", random_word).replace("{SPELLING}", spelling);
+                            box.chatbox("option", "boxManager").addMsg("assistant", text);
+                        },
+                        error:      function(results, status) {
+                            console.log("error " + status.code);
+                            console.log(results);
+                        }
+                    });
                 }
-            );
+            });
 
-            $.ajax(
-                {
-                    type        : "POST",
-                    url         : api_url,
-                    beforeSend  : function(xhr) { xhr.setRequestHeader("Authorization", "Basic " + btoa(credentials)); },
-                    dataType    : "json",
-                    crossDomain : true,
-                    data        : JSON.stringify(json_data),
-                    contentType : "application/json; charset=utf-8",
-                    success: function(data, status, results) {
-                        console.log(results);
-
-			json_data = results.responseJSON;
-			text      = json_data.output.text[0];
-
-                        box.chatbox("option", "boxManager").addMsg("assistant", text);
-                    },
-                    error: function(results, status) {
-                        console.log("error " + status.code);
-                        console.log(results);
-                    }
+            $.ajax({
+                type        : "POST",
+                url         : api_url,
+                dataType    : "json",
+                data        : JSON.stringify(json_data),
+                contentType : "application/json; charset=utf-8",
+                beforeSend: function(xhr) { xhr.setRequestHeader("Authorization", "Basic " + btoa(credentials)); },
+                success:    function(data, status, results) {
+                    console.log(results);
+                    json_data = results.responseJSON;
+                    text      = json_data.output.text[0];
+                    box.chatbox("option", "boxManager").addMsg("assistant", text);
+                },
+                error:      function(results, status) {
+                    console.log("error " + status.code);
+                    console.log(results);
                 }
-            );
+            });
         }
     });
 });
