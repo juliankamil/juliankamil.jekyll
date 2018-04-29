@@ -4,8 +4,17 @@
 
 * Run cors-anywhere
 
+** Run cors-anywhere directly
+
 ``` bash
 PORT=1080 nohup nodejs server.js &
+```
+
+** Run cors-anywhere in a Docker container
+
+``` bash
+cd $WORKSPACE_DIR/dc-cors-anywhere
+docker-compose up -d
 ```
 
 * Run jekyll to build the site
