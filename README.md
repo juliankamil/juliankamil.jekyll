@@ -4,12 +4,18 @@
 
 * Run cors-anywhere
 
-    PORT=1080 nohup nodejs server.js &
+``` bash
+PORT=1080 nohup nodejs server.js &
+```
 
 * Run jekyll to build the site
 
+``` bash
     bundle exec jekyll build
+```
 
 * Run jekyll to serve the site
 
+``` bash
     bundle exec jekyll serve --host=0.0.0.0
+```
